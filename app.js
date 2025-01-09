@@ -151,14 +151,14 @@ function moveDown() {
   for (let col = 0; col < 4; col++) {
     let column = [];
     // Imame visus elementus iš stulpelio
-    for (let row = 0; row < 4; row++) {
+    for (let row = 3; row >= 0; row--) {
       column.push(board[row][col]);
     }
     // Sujungiame ir perkeliame elementus žemyn
     column = merge(column);
-    // Grąžiname juos į stulpelį
-    for (let row = 0; row < 4; row++) {
-      board[row][col] = column[row];
+    // Grąžiname juos atgal į stulpelį
+    for (let row = 3; row >= 0; row--) {
+      board[row][col] = column[3 - row];
     }
   }
 }
