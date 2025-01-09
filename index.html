@@ -1,11 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="lt">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>2048 Žaidimas</title>
     <link rel="stylesheet" href="styles.css" />
     <script defer src="app.js"></script>
   </head>
-  <body></body>
+  <body>
+    <div id="game-container">
+      <h1>2048 Žaidimas</h1>
+      <div id="score-container">
+        <span id="score">Taškai: 0</span>
+      </div>
+      <div id="grid-container"></div>
+      <div id="instructions-container">
+        <p>
+          Naudokite rodyklių klavišus, kad judintumėte plyteles. Pabandykite
+          pasiekti 2048!
+        </p>
+        <button id="next-instruction">Pereiti į kitą žingsnį</button>
+      </div>
+    </div>
+  </body>
 </html>
