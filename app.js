@@ -164,15 +164,25 @@ function moveDown() {
 }
 
 function moveLeft() {
-  flipBoard(); // Apverčiame lentą horizontaliai (eilutes darome stulpeliais)
-  moveDown(); // Vykdome judėjimą žemyn
-  flipBoard(); // Apverčiame lentą atgal
+  for (let row = 0; row < 4; row++) {
+    // Paimame eilutę
+    let line = board[row];
+    // Sujungiame ir perkeliame elementus į kairę
+    line = merge(line);
+    // Grąžiname juos atgal į eilutę
+    board[row] = line;
+  }
 }
 
 function moveRight() {
-  flipBoard(); // Apverčiame lentą horizontaliai
-  moveDown(); // Vykdome judėjimą žemyn
-  flipBoard(); // Apverčiame lentą atgal
+  for (let row = 0; row < 4; row++) {
+    // Paimame eilutę ir ją apverčiame (kad ji taptų tarsi "judėjimas į kairę")
+    let line = board[row].reverse();
+    // Sujungiame ir perkeliame elementus į kairę
+    line = merge(line);
+    // Apverčiame eilutę atgal ir grąžiname į žaidimo lentą
+    board[row] = line.reverse();
+  }
 }
 
 function transposeBoard() {
