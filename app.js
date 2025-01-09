@@ -91,16 +91,16 @@ function addRandomTile() {
 function handleKeyPress(e) {
   switch (e.key) {
     case "ArrowUp":
-      moveUp();
+      move("up");
       break;
     case "ArrowDown":
-      moveDown();
+      move("down");
       break;
     case "ArrowLeft":
-      moveLeft();
+      move("left");
       break;
     case "ArrowRight":
-      moveRight();
+      move("right");
       break;
     default:
       return;
@@ -111,50 +111,93 @@ function handleKeyPress(e) {
 document.addEventListener("keydown", handleKeyPress);
 
 // Judėjimo funkcijos
+function move(direction) {
+  switch (direction) {
+    case "up":
+      moveUp();
+      break;
+    case "down":
+      moveDown();
+      break;
+    case "left":
+      moveLeft();
+      break;
+    case "right":
+      moveRight();
+      break;
+    default:
+      return;
+  }
+  updateBoard();
+}
+
 function moveUp() {
-  // Logika judėti aukštyn
+  transposeBoard(); // Apverčiame lentą (stulpelius darome eilutėmis)
+  moveDown(); // Vykdome judėjimą žemyn
+  transposeBoard(); // Apverčiame lentą atgal į originalią būseną
 }
 
 function moveDown() {
   for (let col = 0; col < 4; col++) {
-    let stack = [];
-
-    // Sukuriame eilę iš visų plytelių toje stulpelio pozicijoje
+    let column = [];
+    // Imame visus elementus iš stulpelio
     for (let row = 0; row < 4; row++) {
-      if (board[row][col]) {
-        stack.push(board[row][col]);
-      }
+      column.push(board[row][col]);
     }
-
-    // Susijungia plytelės
-    for (let i = stack.length - 1; i > 0; i--) {
-      if (stack[i] === stack[i - 1]) {
-        stack[i] *= 2;
-        score += stack[i]; // Pridedame taškus
-        stack[i - 1] = null; // Nustatome, kad plytelės nebėra
-      }
-    }
-
-    // Pridedame papildomą tuščią erdvę
-    while (stack.length < 4) {
-      stack.unshift(null);
-    }
-
-    // Atnaujiname lentą pagal sujungtas plyteles
+    // Sujungiame ir perkeliame elementus žemyn
+    column = merge(column);
+    // Grąžiname juos į stulpelį
     for (let row = 0; row < 4; row++) {
-      board[row][col] = stack[row];
+      board[row][col] = column[row];
     }
   }
-
-  updateBoard(); // Atnaujiname tinklelio būseną
 }
 
 function moveLeft() {
-  // Logika judėti į kairę
+  flipBoard(); // Apverčiame lentą horizontaliai (eilutes darome stulpeliais)
+  moveDown(); // Vykdome judėjimą žemyn
+  flipBoard(); // Apverčiame lentą atgal
 }
 
 function moveRight() {
-  // Logika judėti į dešinę
+  flipBoard(); // Apverčiame lentą horizontaliai
+  moveDown(); // Vykdome judėjimą žemyn
+  flipBoard(); // Apverčiame lentą atgal
+}
+
+function transposeBoard() {
+  let newBoard = [];
+  for (let col = 0; col < 4; col++) {
+    newBoard.push([]);
+    for (let row = 0; row < 4; row++) {
+      newBoard[col][row] = board[row][col];
+    }
+  }
+  board = newBoard; // Įrašome pakeistą lentą
+}
+
+function flipBoard() {
+  board.forEach((row) => row.reverse()); // Apverčiame kiekvieną eilutę
+}
+
+function merge(array) {
+  // Pašaliname nulinės reikšmės
+  let nonEmpty = array.filter((val) => val !== 0);
+
+  for (let i = 0; i < nonEmpty.length - 1; i++) {
+    if (nonEmpty[i] === nonEmpty[i + 1]) {
+      nonEmpty[i] *= 2;
+      nonEmpty[i + 1] = 0;
+      score += nonEmpty[i]; // Pridedame taškus
+    }
+  }
+
+  // Pašaliname vėl nulinės reikšmės ir užpildome su 0
+  nonEmpty = nonEmpty.filter((val) => val !== 0);
+  while (nonEmpty.length < 4) {
+    nonEmpty.push(0);
+  }
+  return nonEmpty;
 }
 
 // Inicijuojame žaidimą
