@@ -132,9 +132,19 @@ function move(direction) {
 }
 
 function moveUp() {
-  transposeBoard(); // Apverčiame lentą (stulpelius darome eilutėmis)
-  moveDown(); // Vykdome judėjimą žemyn
-  transposeBoard(); // Apverčiame lentą atgal į originalią būseną
+  for (let col = 0; col < 4; col++) {
+    let column = [];
+    // Imame visus elementus iš stulpelio
+    for (let row = 0; row < 4; row++) {
+      column.push(board[row][col]);
+    }
+    // Sujungiame ir perkeliame elementus į viršų
+    column = merge(column);
+    // Grąžiname juos atgal į stulpelį
+    for (let row = 0; row < 4; row++) {
+      board[row][col] = column[row];
+    }
+  }
 }
 
 function moveDown() {
