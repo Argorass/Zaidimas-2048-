@@ -19,6 +19,9 @@ body {
   gap: 10px;
   justify-content: center;
   margin-top: 20px;
+  padding: 10px;
+  background-color: #bbada0;
+  border-radius: 10px;
 }
 
 .tile {
