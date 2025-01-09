@@ -91,6 +91,7 @@ function getTileColor(value) {
 }
 
 // Papildoma plytelė
+// Papildoma plytelė po kiekvieno judėjimo
 function addRandomTile() {
   const emptyTiles = [];
   board.forEach((row, rowIndex) => {
@@ -105,6 +106,15 @@ function addRandomTile() {
   const newValue = Math.random() < 0.9 ? 2 : 4;
   board[randomTile.row][randomTile.col] = newValue;
   updateBoard();
+
+  // Po pridėjimo patikriname, ar pasiekta 2048
+  checkFor2048();
+}
+
+// Kai žaidimas prasideda iš naujo
+function restartGame() {
+  document.getElementById("congratulations").style.display = "none"; // Paslėpti pasveikinimo pranešimą
+  initGame(); // Inicijuoti žaidimą iš naujo
 }
 
 // Saugojame dabartinę būseną (prieš judėjimą)
