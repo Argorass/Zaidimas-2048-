@@ -27,6 +27,8 @@ function updateBoard() {
       tileElement.classList.add("tile");
       tileElement.textContent = tile || "";
       tileElement.style.backgroundColor = getTileColor(tile);
+      tileElement.style.gridRowStart = rowIndex + 1;
+      tileElement.style.gridColumnStart = colIndex + 1;
       gridContainer.appendChild(tileElement);
     });
   });
@@ -100,6 +102,8 @@ function handleKeyPress(e) {
     case "ArrowRight":
       moveRight();
       break;
+    default:
+      return;
   }
   addRandomTile();
 }
@@ -112,7 +116,37 @@ function moveUp() {
 }
 
 function moveDown() {
-  // Logika judėti žemyn
+  for (let col = 0; col < 4; col++) {
+    let stack = [];
+
+    // Sukuriame eilę iš visų plytelių toje stulpelio pozicijoje
+    for (let row = 0; row < 4; row++) {
+      if (board[row][col]) {
+        stack.push(board[row][col]);
+      }
+    }
+
+    // Susijungia plytelės
+    for (let i = stack.length - 1; i > 0; i--) {
+      if (stack[i] === stack[i - 1]) {
+        stack[i] *= 2;
+        score += stack[i]; // Pridedame taškus
+        stack[i - 1] = null; // Nustatome, kad plytelės nebėra
+      }
+    }
+
+    // Pridedame papildomą tuščią erdvę
+    while (stack.length < 4) {
+      stack.unshift(null);
+    }
+
+    // Atnaujiname lentą pagal sujungtas plyteles
+    for (let row = 0; row < 4; row++) {
+      board[row][col] = stack[row];
+    }
+  }
+
+  updateBoard(); // Atnaujiname tinklelio būseną
 }
 
 function moveLeft() {
