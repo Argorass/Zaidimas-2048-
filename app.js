@@ -20,6 +20,24 @@ function initGame() {
   undoStack = []; // Išvalome "undo" istoriją, nes pradėjome naują žaidimą
 }
 
+//Patikriname kada bus rezultatas 2048!!!
+function checkFor2048() {
+  for (let row = 0; row < 4; row++) {
+    for (let col = 0; col < 4; col++) {
+      if (board[row][col] === 2048) {
+        // Jeigu yra, rodom pasveikinimo langą
+        showCongratulations();
+        return; // Sustabdo tolesnį tikrinimą
+      }
+    }
+  }
+}
+
+function showCongratulations() {
+  const congratulationsElement = document.getElementById("congratulations");
+  congratulationsElement.style.display = "block"; // Parodome pasveikinimo pranešimą
+}
+
 // Atnaujiname lentą su plytelėmis
 function updateBoard() {
   gridContainer.innerHTML = "";
